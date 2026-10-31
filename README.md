@@ -3,7 +3,7 @@
 A tiny terminal coding chat that talks to **local models through
 [Ollama](https://ollama.com)**. Pick a few files from the current directory,
 pick a model, and ask questions — no API keys, no cloud, nothing leaves your
-machine.
+machine, simple and easy to use.
 
 ```
 > /ask how do I reverse a list in python?
@@ -49,7 +49,8 @@ pocket-code
 
 Run `pocket-code` inside a project. It asks which files to use as context, then
 which model to use. The model choice is remembered, so the next run starts
-straight away.
+straight away. Files in subdirectories are listed too, labelled by their path
+relative to where you run it (e.g. `src/app/config.py`).
 
 | Command     | What it does                                              |
 |-------------|-----------------------------------------------------------|

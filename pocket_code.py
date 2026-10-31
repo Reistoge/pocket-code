@@ -11,9 +11,20 @@ from rich.console import Console
 
 CONFIG_FILE = os.path.expanduser("~/.config/pocket-code/config.json")
 
+SKIP_DIRS = {"venv", "__pycache__", "node_modules"}
+
 def get_directory_files(directory="."):
-    """Returns a list of files in the current directory."""
-    return [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))]
+    """Returns all files under directory as paths relative to it.
+
+    Relative paths keep each context header meaningful (e.g. src/app/config.py)
+    while still opening correctly from the current working directory.
+    """
+    found = []
+    for root, dirs, files in os.walk(directory):
+        # Skip hidden folders (.git, .venv, ...) and heavy dependency folders.
+        dirs[:] = [d for d in dirs if not d.startswith(".") and d not in SKIP_DIRS]
+        found.extend(os.path.relpath(os.path.join(root, f), directory) for f in files)
+    return sorted(found)
 
 def count_tokens(text: str) -> int:
     """Estimates token count using tiktoken."""
